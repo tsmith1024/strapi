@@ -105,22 +105,6 @@ module.exports = context => {
   };
 
   /**
-   * Add an enum attribute to the type definition
-   *
-   * The attribute is added by fetching the enum's type
-   * name and using it as the attribute's type
-   *
-   * @param {TypeBuildersOptions} options
-   */
-  const addEnumAttribute = ({ builder, attributeName, contentType }) => {
-    const { naming } = getGraphQLService('utils');
-
-    const type = naming.getEnumName(contentType, attributeName);
-
-    builder.field(attributeName, { type });
-  };
-
-  /**
    * Add a media attribute to the type definition
    * @param {TypeBuildersOptions} options
    */
@@ -263,7 +247,6 @@ module.exports = context => {
         isStrapiScalar,
         isComponent,
         isDynamicZone,
-        isEnumeration,
         isMedia,
         isMorphRelation,
         isRelation,
@@ -322,13 +305,8 @@ module.exports = context => {
                */
               const options = { builder, attributeName, attribute, contentType, context };
 
-              // Enums
-              if (isEnumeration(attribute)) {
-                addEnumAttribute(options);
-              }
-
               // Scalars
-              else if (isStrapiScalar(attribute)) {
+              if (isStrapiScalar(attribute)) {
                 addScalarAttribute(options);
               }
 
